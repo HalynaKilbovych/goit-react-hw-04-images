@@ -1,41 +1,37 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { Backdrop, ModalWrap } from './Modal.styled';
 import PropTypes from 'prop-types';
 
-export class Modal extends Component {
+export const Modal = ({ image, tags, onClick }) => {
+
+  useEffect(() => {
+    const handleKeyDown = e => {
+      if (e.code === 'Escape') {
+        onClick();
+      }
+    };
   
-  handleKeyDown = e => {
-    if (e.code === 'Escape') {
-      this.props.onClick();
-    }
-  };
+    window.addEventListener('keydown', handleKeyDown);
+  
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onClick]);
 
-  componentDidMount() {
-    window.addEventListener('keydown', this.handleKeyDown);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleKeyDown);
-  }
-
-  handleClose = event => {
+  const handleClose = event => {
     if (event.target === event.currentTarget) {
-      this.props.onClick();
+      onClick();
     }
   };
 
-  render() {
-    const { image, tags } = this.props;
-
-    return (
-      <Backdrop onClick={this.handleClose}>
-        <ModalWrap>
-          <img src={image} alt={tags} />
-        </ModalWrap>
-      </Backdrop>
-    );
-  }
-}
+  return (
+    <Backdrop onClick={handleClose}>
+      <ModalWrap>
+        <img src={image} alt={tags} />
+      </ModalWrap>
+    </Backdrop>
+  );
+};
 
 Modal.propTypes = {
   image: PropTypes.string.isRequired,

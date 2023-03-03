@@ -19,3 +19,9 @@ fetchImages.propTypes = {
   query: PropTypes.string.isRequired,
   page: PropTypes.number.isRequired,
 };
+
+
+// if (!response.ok) {
+//   throw new Error(`Failed to fetch images for query "${query}" (HTTP ${response.status})`);
+// }
+// return response.json();
